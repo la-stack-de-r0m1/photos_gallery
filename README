@@ -1,0 +1,6 @@
+1. Open the .env.sample and, in the line DATABASE_URL (mysql), replace the
+database credentials <login> and <password> by the actual login and password
+(without the ('<' and '>' signs).
+
+2. Rename the file .env.sample into .env:
+   $ cp .env.sample .env

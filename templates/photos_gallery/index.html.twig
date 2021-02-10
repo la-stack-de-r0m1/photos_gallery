@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PhotosGalleryController!{% endblock %}
+
+{% block body %}
+
+<section class="pictures">
+<div class="row">
+    {% for picture in pictures %}
+        <div class="col-md-4">
+            <h2>{{ picture.name }}</h2>
+            <div class="metadata">Added {{ picture.addedAt | date('y/m/d') }} 
+                at {{ picture.addedAt | date('H:i') }}
+            </div>
+            <div class="content">
+                <img src="{{ picture.pictureFilename }}" alt="{{ picture.name }}" width="350" height="150">
+                <hr>
+                <a href="{{ path('photos_show', {'name' : picture.name}) }}" class="btn btn-primary">Open</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+</section>
+
+{% endblock %}

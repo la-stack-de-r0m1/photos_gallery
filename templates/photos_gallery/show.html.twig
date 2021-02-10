@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div>
+    <h2>{{ picture.name }}</h2>
+    <div class="metadata">Added Added {{ picture.addedAt | date('y/m/d') }} 
+                at {{ picture.addedAt | date('H:i') }}</div>
+    <div class="content">
+        <img src="{{ picture.pictureFilename }}" alt="{{ picture.name }}">
+    </div>
+</div>
+
+
+{% endblock %}
