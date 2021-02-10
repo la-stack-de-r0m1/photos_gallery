@@ -3,12 +3,21 @@
 {% block body %}
 
 <div>
+    {% if error is defined %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
     <h2>{{ picture.name }}</h2>
     <div class="metadata">Added {{ picture.addedAt | date('y/m/d') }} 
                 at {{ picture.addedAt | date('H:i') }}</div>
     <div class="content">
         <img src="{{ '/uploads/pictures/' ~ picture.pictureFilename }}" alt="{{ picture.name }}">
     </div>
+
+    <a href="{{ path('photos_del', {'slugName' : picture.slugName}) }}" class="btn btn-danger"
+        onclick="return confirm('Are you sure you want to delete this item?')">
+    Delete</a>
+
 </div>
 
 

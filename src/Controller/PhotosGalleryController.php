@@ -96,4 +96,14 @@ class PhotosGalleryController extends AbstractController
             'picture' => $picture
         ]);
     }
+
+    /**
+     * @Route("/photos/{slugName}/del", name="photos_del")
+     */
+    public function del(Picture $picture, EntityManagerInterface $manager) : Response
+    {
+      $manager->remove($picture);
+      $manager->flush();
+      return $this->redirectToRoute('photos_gallery');
+    }
 }
