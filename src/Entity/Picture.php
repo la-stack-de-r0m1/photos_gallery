@@ -32,6 +32,11 @@ class Picture
      */
     private $addedAt;
 
+    /**
+     * @ORM\Column[type="string"]
+     */
+    private $slugName;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class Picture
     public function setAddedAt(\DateTimeInterface $addedAt): self
     {
         $this->addedAt = $addedAt;
+
+        return $this;
+    }
+
+    public function getSlugName(): ?string
+    {
+        return $this->slugName;
+    }
+
+    public function setSlugName(string $slugName): self
+    {
+        $this->slugName = $slugName;
 
         return $this;
     }

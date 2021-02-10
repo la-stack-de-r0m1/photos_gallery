@@ -14,6 +14,7 @@ class PictureFixture extends Fixture
             $picture = new Picture();
             $picture->setName("Picture n°$i")
                     ->setPictureFilename("http://placehold.it/800x600")
+                    ->setSlugName("useless_stuff")
                     ->setAddedAt(new \DateTime());
             $manager->persist($picture);
         }

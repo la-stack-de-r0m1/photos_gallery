@@ -13,9 +13,9 @@
                 at {{ picture.addedAt | date('H:i') }}
             </div>
             <div class="content">
-                <img src="{{ picture.pictureFilename }}" alt="{{ picture.name }}" width="350" height="150">
+                <img src="{{ 'uploads/pictures/' ~ picture.pictureFilename }}" alt="{{ picture.name }}" width="350" height="150">
                 <hr>
-                <a href="{{ path('photos_show', {'name' : picture.name}) }}" class="btn btn-primary">Open</a>
+                <a href="{{ path('photos_show', {'slugName' : picture.slugName}) }}" class="btn btn-primary">Open</a>
             </div>
         </div>
     {% endfor %}
