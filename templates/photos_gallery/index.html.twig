@@ -12,7 +12,7 @@
             <div class="metadata">Added {{ picture.addedAt | date('y/m/d') }} 
                 at {{ picture.addedAt | date('H:i') }}
             </div>
-            <div class="content">
+            <div class="content">   
                 <img src="{{ 'uploads/pictures/' ~ picture.pictureFilename }}" alt="{{ picture.name }}" width="350" height="150">
                 <hr>
                 <a href="{{ path('photos_show', {'slugName' : picture.slugName}) }}" class="btn btn-primary">Open</a>

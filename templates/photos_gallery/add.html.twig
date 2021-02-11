@@ -13,7 +13,9 @@
             {'attr': {'placeholder': 'Picture name'}}
         )}}
         
-        {{ form_widget(
+        {{ form_row(formPicture.tag) }}
+
+        {{ form_row(
             formPicture.pictureFilename
         )}}
         <hr>

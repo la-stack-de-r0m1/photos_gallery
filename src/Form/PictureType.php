@@ -3,10 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Picture;
+use App\Entity\Tag;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
 
 class PictureType extends AbstractType
@@ -38,7 +40,10 @@ class PictureType extends AbstractType
                     ])
                 ],
             ])
-            //->add('addedAt')
+            ->add('tag', EntityType::class, [
+                'class' => Tag::class
+                , 'choice_label' => 'name',
+            ])
         ;
     }
 
