@@ -82,7 +82,7 @@ class PhotosGalleryController extends AbstractController
         ]);
       }
 
-      return $this->render('photos_gallery/add.html.swig', [
+      return $this->render('photos_gallery/add.html.twig', [
         'formPicture' => $form->createView()
       ]);
     }
