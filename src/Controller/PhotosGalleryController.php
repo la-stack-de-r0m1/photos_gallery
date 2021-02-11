@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * This file is part of the photos_gallery project
+ * 
+ * Author: Romain Bertholon <romain.bertholon@gmail.com>
+ */
+
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,9 +27,27 @@ use App\Repository\PictureRepository;
 use App\Form\PictureType;
 use App\Form\CommentType;
 
+/**
+ * Controller for the photos_gallery app.
+ */
 class PhotosGalleryController extends AbstractController
 {
     /**
+     * Route to the web site home page, that does pretty much nothing.
+     * 
+     * @Route("/", name="photos_home")
+     */
+    public function home(): Response
+    {
+        return $this->render('photos_gallery/home.html.twig');
+    }
+    /**
+     * Display the index, where all the pictuires thumb are displayed, allowing
+     * the user to open them by clicking on them.
+     * 
+     * @param PictureRepository $repo the picture repository used to get
+     * pictures data to display them.
+     * 
      * @Route("/photos", name="photos_gallery")
      */
     public function index(PictureRepository $repo): Response
@@ -35,16 +59,18 @@ class PhotosGalleryController extends AbstractController
     }
 
     /**
-     * @Route("/", name="photos_home")
+     * Route to the add picture page, that displays a form to select a picture
+     * and upload it upon validation. Check the data are valid, and save them
+     * if they are.
+     * 
+     * @param Request $request the request containing the picture that need to
+     * be saved.
+     * @param EntityManagerInterface $manager the doctrine entity manager
+     * @param SluggerInterface $slugger the interface used to slug the picture
+     * name
+     * 
+     * @Route("/photos/add", name="photos_add")
      */
-    public function home(): Response
-    {
-        return $this->render('photos_gallery/home.html.twig');
-    }
-
-    /**
-    * @Route("/photos/add", name="photos_add")
-    */
     public function add(Request $request, EntityManagerInterface $manager, SluggerInterface $slugger) : Response
     {
       $picture = new Picture();
@@ -86,6 +112,12 @@ class PhotosGalleryController extends AbstractController
     }
 
     /**
+     * The root to display a pictures with its comments if any.
+     * 
+     * @param Picture $picture the picture to display
+     * @param Request $request the request used to fill the comment form
+     * @param EntityManagerInterface $manager the doctrine ORM manager
+     * 
      * @Route("/photos/{slugName}", name="photos_show")
      */
     public function show(Picture $picture, Request $request, EntityManagerInterface $manager) : Response
@@ -109,12 +141,15 @@ class PhotosGalleryController extends AbstractController
     }
 
     /**
+     * The delete picture route.
+     * 
      * Remove 
      * - The file
      * - The entry from the database
      * 
      * @param Picture $picture the picture to delete
-     * @param EntityManagerInterface $manager doctrine manager to modify the DB.
+     * @param EntityManagerInterface $manager doctrine entity manager to modify
+     * the DB.
      * 
      * @Route("/photos/{slugName}/del", name="photos_del")
      */
