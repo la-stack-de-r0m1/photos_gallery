@@ -9,6 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
+
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -52,6 +55,7 @@ class PhotosGalleryController extends AbstractController
         $pictureFile = $form->get('pictureFilename')->getData();
         if ($pictureFile) {
           $originalFilename = pathinfo($pictureFile->getClientOriginalName(), PATHINFO_FILENAME);
+          
           // this is needed to safely include the file name as part of the URL
           $safeFilename = $slugger->slug($originalFilename);
           $unique_id = uniqid();
@@ -59,18 +63,10 @@ class PhotosGalleryController extends AbstractController
 
           $safeName = $slugger->slug($picture->getName() . '-' . $unique_id);
 
-          // Move the file to the directory where brochures are stored
-          try {
-            $pictureFile->move(
+          $pictureFile->move(
               $this->getParameter('pictures_directory'),
               $newFilename
-            );
-          } catch (FileException $e) {
-            // ... handle exception if something happens during file upload
-          }
-
-          // updates the 'brochureFilename' property to store the PDF file name
-          // instead of its contents
+          );
           $picture->setPictureFilename($newFilename);
           $picture->setSlugName($safeName);
         }
@@ -113,12 +109,28 @@ class PhotosGalleryController extends AbstractController
     }
 
     /**
+     * Remove 
+     * - The file
+     * - The entry from the database
+     * 
+     * @param Picture $picture the picture to delete
+     * @param EntityManagerInterface $manager doctrine manager to modify the DB.
+     * 
      * @Route("/photos/{slugName}/del", name="photos_del")
      */
     public function del(Picture $picture, EntityManagerInterface $manager) : Response
     {
-      $manager->remove($picture);
-      $manager->flush();
+      $filesystem = new Filesystem();
+      $filename = $picture->getPictureFilename();
+      try {
+        $filesystem->remove($this->getParameter('pictures_directory') . '/' . $filename);
+        $manager->remove($picture);
+        $manager->flush();
+      } catch (IOExceptionInterface $exception) {
+        return $this->redirectToRoute('photos_show', [
+          'slugName'  => $picture->getSlugName()
+        ]);
+      }
       return $this->redirectToRoute('photos_gallery');
     }
 }
