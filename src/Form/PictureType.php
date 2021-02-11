@@ -1,4 +1,9 @@
 <?php
+/**
+ * This file is part of the photos_gallery project
+ * 
+ * Author: Romain Bertholon <romain.bertholon@gmail.com>
+ */
 
 namespace App\Form;
 
@@ -10,6 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
+
 
 class PictureType extends AbstractType
 {
@@ -23,7 +29,7 @@ class PictureType extends AbstractType
                 // unmapped means that this field is not associated to any entity property
                 'mapped' => false,
 
-                // make it optional so you don't have to re-upload the PDF file
+                // make it optional so you don't have to re-upload the 
                 // every time you edit the Product details
                 'required' => false,
 
