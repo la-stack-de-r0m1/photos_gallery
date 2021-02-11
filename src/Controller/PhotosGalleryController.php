@@ -13,8 +13,10 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Picture;
+use App\Entity\Comment;
 use App\Repository\PictureRepository;
 use App\Form\PictureType;
+use App\Form\CommentType;
 
 class PhotosGalleryController extends AbstractController
 {
@@ -90,11 +92,24 @@ class PhotosGalleryController extends AbstractController
     /**
      * @Route("/photos/{slugName}", name="photos_show")
      */
-    public function show(Picture $picture) : Response
+    public function show(Picture $picture, Request $request, EntityManagerInterface $manager) : Response
     {
-        return $this->render('photos_gallery/show.html.twig', [
-            'picture' => $picture
-        ]);
+      $comment = new Comment();
+      $form = $this->createForm(CommentType::class, $comment);
+      $form->handleRequest($request);
+      
+      if ($form->isSubmitted() && $form->isValid()) {
+        $comment->setCreatedAt(new \DateTime());
+        $comment->setPicture($picture);
+        
+        $manager->persist($comment);
+        $manager->flush();
+      }
+
+      return $this->render('photos_gallery/show.html.twig', [
+          'picture' => $picture,
+          'formComment' => $form->createView()
+      ]);
     }
 
     /**

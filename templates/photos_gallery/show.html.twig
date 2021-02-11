@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% form_theme formComment 'bootstrap_4_layout.html.twig' %}
+
 {% block body %}
 
     <div>
@@ -40,6 +42,25 @@
             <hr>
 
         {% endfor %}
+    </section>
+    <section id="add_comment">
+        <h2>Adding a comment</h2>
+        {{ form_start(formComment) }}
+        
+            {{ form_row(
+                formComment.author,
+                {'attr': {'placeholder': 'Enter your name'}}
+            )}}
+        
+            {{ form_row(
+                formComment.content
+            )}}
+            
+            <hr>
+            {{ form_row(formComment._token) }}
+            <button type="submit" class="btn btn-success">Add comment</button
+        
+        {{ form_end(formComment) }}
     </section>
 
 {% endblock %}
