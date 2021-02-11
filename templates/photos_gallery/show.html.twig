@@ -24,7 +24,7 @@
     </div>
     <hr>
     <section id="comments">
-        <h2>Comments</h2>
+        <h2>{{ picture.comments | length }} comment(s):</h2>
         {% for comment in picture.comments %}
 
             <div class="comment">
@@ -44,13 +44,27 @@
         {% endfor %}
     </section>
     <section id="add_comment">
-        <h4>Adding a comment</h4>
-        {{ form_start(formComment) }}
+
+        {% if not app.user %}
+            <h4>Adding a comment:</h4>
+        {% else %}
+            <h4>Comment as <strong>{{ app.user.username }}</strong>: </h4>
+        {% endif %}
         
-            {{ form_row(
-                formComment.author,
-                {'attr': {'placeholder': 'Enter your name'}}
-            )}}
+        {{ form_start(formComment) }}
+            {% if not app.user %}
+                {{ form_row(
+                    formComment.author,
+                    {'attr': {'placeholder': 'Enter your name'}}
+                )}}
+            {% else %}
+                {{ form_row(
+                    formComment.author,
+                    {
+                        'attr': {'value': app.user.username },
+                    }
+                )}}
+            {% endif %}
         
             {{ form_row(
                 formComment.content

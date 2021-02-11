@@ -95,7 +95,8 @@ class PhotosGalleryController extends AbstractController
     }
 
     /**
-     * The root to display a pictures with its comments if any.
+     * The root to display a pictures with its comments if any. Also displays
+     * a form to add a comment.
      * 
      * @param Picture $picture the picture to display
      * @param Request $request the request used to fill the comment form
@@ -110,11 +111,13 @@ class PhotosGalleryController extends AbstractController
       $form->handleRequest($request);
       
       if ($form->isSubmitted() && $form->isValid()) {
-        $comment->setCreatedAt(new \DateTime());
-        $comment->setPicture($picture);
-        
+        $comment->setCreatedAt(new \DateTime())
+                ->setPicture($picture);
         $manager->persist($comment);
         $manager->flush();
+        return $this->redirectToRoute('photos_show', [
+          'slugName' => $picture->getSlugName()
+        ]);
       }
 
       return $this->render('photos_gallery/show.html.twig', [
