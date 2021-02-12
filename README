@@ -4,3 +4,5 @@ database credentials <login> and <password> by the actual login and password
 
 2. Rename the file .env.sample into .env:
    $ cp .env.sample .env
+
+   composer require knplabs/knp-paginator-bundle

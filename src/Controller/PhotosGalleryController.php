@@ -8,20 +8,21 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Filesystem\Filesystem;
+use App\Entity\Comment;
+use App\Entity\Picture;
+use App\Form\CommentType;
+use App\Form\PictureType;
+use App\Service\PictureUploader;
+
+use App\Repository\PictureRepository;
 
 use Doctrine\ORM\EntityManagerInterface;
-
-use App\Service\PictureUploader;
-use App\Entity\Picture;
-use App\Entity\Comment;
-use App\Repository\PictureRepository;
-use App\Form\PictureType;
-use App\Form\CommentType;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Controller for the photos_gallery app.
@@ -46,9 +47,17 @@ class PhotosGalleryController extends AbstractController
      * 
      * @Route("/photos", name="photos_gallery")
      */
-    public function index(PictureRepository $repo): Response
+    public function index(PictureRepository $repo, Request $request,
+      PaginatorInterface $paginator): Response
     {
-        $pictures = $repo->findAll();
+        $allPictures = $repo->findAll();
+
+        $pictures = $paginator->paginate(
+          $allPictures,
+          $request->query->getInt('page', 1),
+          9 // 3 x 3 pictures by page
+      );
+
         return $this->render('photos_gallery/index.html.twig', [
             'pictures' => $pictures
         ]);
