@@ -24,32 +24,42 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class SecurityController extends AbstractController
 {
     /**
+     * Register a new user with the ROLE_USER.
+     * 
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @param UserPasswordEncoderInterface $encoder
+     * 
      * @Route("/inscription", name="security_registration")
      */
     public function registration(Request $request, EntityManagerInterface $manager,
         UserPasswordEncoderInterface $encoder): Response
     {
         $user = new User();
-
         $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
+            
             $manager->persist($user);
             $manager->flush(); 
-
+            
             return $this->redirectToRoute('security_login', [
                 'success' => "User successfully created!"
             ]);
         }
-
         return $this->render('security/registration.html.twig', [
             'form' => $form->createView()
         ]);
     }
 
     /**
+     * Login function.
+     * 
+     * @param AuthenticationUtils $authenticationUtils used to check if a login failure occured.
+     * 
      * @Route("/login", name="security_login")
      */
     public function login(AuthenticationUtils $authenticationUtils) {
@@ -60,6 +70,8 @@ class SecurityController extends AbstractController
     }
 
     /**
+     * Logout function.
+     * 
      * @Route("/logout", name="security_logout")
      */
     public function logout() {}

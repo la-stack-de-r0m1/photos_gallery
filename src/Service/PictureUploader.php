@@ -59,7 +59,6 @@ class PictureUploader
         $newFilename .= ('.' . $picture->guessExtension());
         $picture->move($this->targetDirectory, $newFilename);
 
-
         list($iwidth, $iheight) = getimagesize($this->targetDirectory . '/' . $newFilename);
         $ratio = $iwidth / $iheight;
         $width = 1000;

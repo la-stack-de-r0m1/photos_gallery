@@ -31,7 +31,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PhotosGalleryController extends AbstractController
 {
     /**
-     * Route to the web site home page, that does pretty much nothing.
+     * Route to the web site home page. Displays a link to create a user admin
+     * when it does not exist.
+     * 
+     * @param UserRepository $userRepo used to get the admin user.
      * 
      * @Route("/", name="photos_home")
      */
@@ -55,6 +58,9 @@ class PhotosGalleryController extends AbstractController
      * 
      * @param PictureRepository $repo the picture repository used to get
      * pictures data to display them.
+     * @param Request $request
+     * @param PaginatorInterface $paginator used to paginate if there are more
+     * than 12 pictures on the page.
      * 
      * @Route("/photos", name="photos_gallery")
      */
@@ -67,7 +73,7 @@ class PhotosGalleryController extends AbstractController
           $allPictures,
           $request->query->getInt('page', 1),
           12 // 3 lines of 4 pictures
-      );
+        );
 
         return $this->render('photos_gallery/index.html.twig', [
             'pictures' => $pictures
@@ -77,7 +83,9 @@ class PhotosGalleryController extends AbstractController
     /**
      * Route to the add picture page, that displays a form to select a picture
      * and upload it upon validation. Check the data are valid, and save them
-     * if they are.
+     * if they are. Resize the picture and create the thumbnail.
+     * 
+     * The admin alone can access this page.
      * 
      * @param Request $request the request containing the picture that need to
      * be saved.
@@ -87,7 +95,8 @@ class PhotosGalleryController extends AbstractController
      * 
      * @Route("/photos/add", name="photos_add")
      */
-    public function add(Request $request, EntityManagerInterface $manager, PictureUploader $uploader) : Response
+    public function add(Request $request, EntityManagerInterface $manager,
+      PictureUploader $uploader) : Response
     {
       $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
@@ -119,11 +128,12 @@ class PhotosGalleryController extends AbstractController
 
     /**
      * The root to display a pictures with its comments if any. Also displays
-     * a form to add a comment.
+     * a form to add a comment, and handle the comment form when it's submitted.
      * 
-     * @param Picture $picture the picture to display
-     * @param Request $request the request used to fill the comment form
-     * @param EntityManagerInterface $manager the doctrine ORM manager
+     * @param Picture $picture the picture to display.
+     * @param Request $request the request used to fill the comment form.
+     * @param EntityManagerInterface $manager the doctrine ORM manager.
+     * @param PictureRepository $pictureRepo the picture repository, used to get previous et next pictures.
      * 
      * @Route("/photos/{slugName}", name="photos_show")
      */
@@ -159,6 +169,7 @@ class PhotosGalleryController extends AbstractController
      * 
      * Remove 
      * - The file
+     * - The thumbnail
      * - The entry from the database
      * 
      * @param Picture $picture the picture to delete

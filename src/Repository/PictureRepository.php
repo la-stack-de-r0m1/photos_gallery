@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * This file is part of the photos_gallery project
+ * 
+ * Author: Romain Bertholon <romain.bertholon@gmail.com>
+ */
+
 namespace App\Repository;
 
 use App\Entity\Picture;
@@ -19,36 +25,14 @@ class PictureRepository extends ServiceEntityRepository
         parent::__construct($registry, Picture::class);
     }
 
-    // /**
-    //  * @return Picture[] Returns an array of Picture objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Picture
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    public function getPreviousPicture($pictureId)
+    /**
+     * Get the previous picture.
+     * 
+     * @param $pictureId the current picture Id
+     * 
+     * @return Picture the picture preceeding the picture with pictureId, or null.
+     */
+    public function getPreviousPicture($pictureId) : Picture
     {
         return $this->createQueryBuilder('u')
                 ->select('u')
@@ -62,7 +46,14 @@ class PictureRepository extends ServiceEntityRepository
         ;
     }
 
-    public function getNextPicture($pictureId)
+    /**
+     * Get the next picture.
+     * 
+     * @param $pictureId the current picture Id
+     * 
+     * @return Picture the picture following the picture with pictureId, or null.
+     */
+    public function getNextPicture($pictureId) : Picture
     {
         return $this->createQueryBuilder('u')
                 ->select('u')

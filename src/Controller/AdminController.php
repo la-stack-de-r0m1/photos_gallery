@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * This file is part of the photos_gallery project
+ * 
+ * Author: Romain Bertholon <romain.bertholon@gmail.com>
+ */
+
 namespace App\Controller;
 
 use App\Entity\Tag;
@@ -15,9 +21,20 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * This class is used to create the admin user, and to access the admin page where the admin can
+ * add tags for the pictures.
+ */
 class AdminController extends AbstractController
 {
     /**
+     * Register the admin user, if it does not already exist, when the form is submitted.
+     * 
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @param UserPasswordEncoderInterface $encoder
+     * @param  UserRepository $userRepo
+     * 
      * @Route("/admin/registration", name="admin_register")
      */
     public function registration(Request $request, EntityManagerInterface $manager,
@@ -52,9 +69,17 @@ class AdminController extends AbstractController
     }
 
     /**
+     * Main admin page, accessible only to the admin. Used to create tags.
+     * 
+     * @param Request $request
+     * @param EntityManagerInterface $manager,
+     * @param TagRepository $tagRepo
+     * 
      * @Route("/admin", name="admin_home")
      */
-    public function index(Request $request, EntityManagerInterface $manager, TagRepository $tagRepo) : Response {
+    public function index(Request $request, EntityManagerInterface $manager,
+        TagRepository $tagRepo) : Response
+    {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $tags = $tagRepo->findAll();
         $tag = new Tag();
