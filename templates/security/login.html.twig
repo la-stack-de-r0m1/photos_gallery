@@ -1,13 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <style>
+        .simple-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .simple-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+<div class="simple-wrapper">
     {% if app.request.get('error') %}
         <div class="alert alert-danger">
             {{ app.request.get('error') }}
         </div>
     {% elseif app.request.get('success') %}
         <div class="alert alert-success">
-            {{ app.request.get('success') }}
+            ✅ {{ app.request.get('success') }}
+        </div>
+    {% endif %}
+
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
         </div>
     {% endif %}
 
@@ -31,5 +43,6 @@
     {% else %}
         <h1>Welcome, {{ app.user.username }}</h1>
     {% endif %}
+</div>
 
 {% endblock %}
