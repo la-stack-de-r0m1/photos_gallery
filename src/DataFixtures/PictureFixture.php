@@ -98,6 +98,7 @@ class PictureFixture extends Fixture
                 ->setSlugName($safeName)
                 ->setPictureFilename($this->faker->imageUrl())
                 ->setAddedAt($this->faker->dateTime())
+                ->setThumbFilename($picture->getPictureFilename())
                 ->setTag($tag);
         return $picture;
     }

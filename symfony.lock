@@ -102,6 +102,9 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
+    "imagine/imagine": {
+        "version": "1.2.4"
+    },
     "knplabs/knp-components": {
         "version": "v3.0.0"
     },

@@ -20,6 +20,11 @@
         {{ form_row(
             formPicture.pictureFilename
         )}}
+
+        {{ form_row(
+            formPicture.description,
+            {'attr': {'placeholder': 'Picture description (can be empty)'}}
+        )}}
         <hr>
         
         {{ form_row(formPicture._token) }}

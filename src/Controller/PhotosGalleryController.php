@@ -66,7 +66,7 @@ class PhotosGalleryController extends AbstractController
         $pictures = $paginator->paginate(
           $allPictures,
           $request->query->getInt('page', 1),
-          9 // 3 x 3 pictures by page
+          12 // 3 lines of 4 pictures
       );
 
         return $this->render('photos_gallery/index.html.twig', [
@@ -100,6 +100,7 @@ class PhotosGalleryController extends AbstractController
         if ($pictureFile) {
           $pictureNames = $uploader->upload($pictureFile, $picture->getName());
           $picture->setPictureFilename($pictureNames['newPictureName'])
+                  ->setThumbFilename($pictureNames['thumbFilename'])
                   ->setSlugName($pictureNames['safePictureName'])
                   ->setAddedAt(new \DateTime());;
         }
@@ -165,9 +166,9 @@ class PhotosGalleryController extends AbstractController
       $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
       $filesystem = new Filesystem();
-      $filename = $picture->getPictureFilename();
       try {
-        $filesystem->remove($this->getParameter('pictures_directory') . '/' . $filename);
+        $filesystem->remove($this->getParameter('pictures_directory') . '/' . $picture->getPictureFilename());
+        $filesystem->remove($this->getParameter('pictures_directory') . '/' . $picture->getThumbFilename());
         $manager->remove($picture);
         $manager->flush();
       } catch (IOExceptionInterface $exception) {

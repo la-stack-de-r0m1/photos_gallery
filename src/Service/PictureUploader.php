@@ -8,8 +8,10 @@
 
 namespace App\Service;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Imagine\Image\Box;
+use Imagine\Gd\Imagine;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * This class is a service used to upload pictures.
@@ -27,9 +29,16 @@ class PictureUploader
      */
     private $slugger;
 
+    /**
+     * @var \Imagine\Gd\Imagine to resize the pictures
+     */
+    private $imagine;
+
+
     public function __construct($targetDirectory, SluggerInterface $slugger) {
         $this->targetDirectory = $targetDirectory;
         $this->slugger = $slugger;
+        $this->imagine = new \Imagine\Gd\Imagine();
     }
 
     /**
@@ -44,15 +53,33 @@ class PictureUploader
         $originalFilename = pathinfo($picture->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
         $unique_id = uniqid();
-        $newFilename = $safeFilename . '-' . $unique_id . '.' . $picture->guessExtension();
-
-        $safeName = $this->slugger->slug($picture_name . '-' . $unique_id);
-
+        
+        $newFilename = $safeFilename . '-' . $unique_id;
+        $newThumName = $safeFilename . '-' . $unique_id . '-thumb' . '.' . $picture->guessExtension();
+        $newFilename .= ('.' . $picture->guessExtension());
         $picture->move($this->targetDirectory, $newFilename);
 
+
+        list($iwidth, $iheight) = getimagesize($this->targetDirectory . '/' . $newFilename);
+        $ratio = $iwidth / $iheight;
+        $width = 1000;
+        $height = 800;
+        if ($width / $height > $ratio) {
+            $width = $height * $ratio;
+        } else {
+            $height = $width / $ratio;
+        }
+        $resisedPicture = $this->imagine->open($this->targetDirectory . '/' . $newFilename);
+        $resisedPicture->resize(new Box($width, $height))->save($this->targetDirectory . '/' . $newFilename);
+
+        $thumbnail = $resisedPicture->thumbnail(new Box(200, 100));
+        $thumbnail->save($this->targetDirectory . '/' . $newThumName);
+
+        $safeName = $this->slugger->slug($picture_name . '-' . $unique_id);
         return [
               'safePictureName' => $safeName
             , 'newPictureName'  => $newFilename
+            , 'thumbFilename'   => $newThumName
         ];
     }
 }

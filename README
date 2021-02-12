@@ -6,3 +6,4 @@ database credentials <login> and <password> by the actual login and password
    $ cp .env.sample .env
 
    composer require knplabs/knp-paginator-bundle
+   composer req "imagine/imagine:^1.2"

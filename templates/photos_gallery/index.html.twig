@@ -4,28 +4,31 @@
 
 {% block body %}
 <div>
-    Got to page : {{ knp_pagination_render(pictures) }} 
+    {{ knp_pagination_render(pictures) }} 
 </div>
 
 <section class="pictures">
 <div class="row">
     {% for picture in pictures %}
-        <div class="col-md-4">
-            <h2>{{ picture.name }}</h2>
+        <div class="col-md-3">
+            <h3>{{ picture.name }}</h3>
             <div class="metadata">Added {{ picture.addedAt | date('y/m/d') }} 
                 at {{ picture.addedAt | date('H:i') }}
             </div>
-            <div class="content">   
-                <img src="{{ 'uploads/pictures/' ~ picture.pictureFilename }}" alt="{{ picture.name }}" width="350" height="150">
+            <div class="content">
+                <a href="{{ path('photos_show', {'slugName' : picture.slugName}) }}">
+                    <img src="{{ 'uploads/pictures/' ~ picture.thumbFilename }}" alt="{{ picture.name }}">
+                </a>
                 <hr>
-                <a href="{{ path('photos_show', {'slugName' : picture.slugName}) }}" class="btn btn-primary">Open</a>
+                <a href="{{ path('photos_show', {'slugName' : picture.slugName}) }}"
+                    class="btn btn-primary">View</a>
             </div>
         </div>
     {% endfor %}
 </div>
 </section>
 <div>
-    Got to page : {{ knp_pagination_render(pictures) }}
+    {{ knp_pagination_render(pictures) }}
 </div>
 
 {% endblock %}

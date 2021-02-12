@@ -7,14 +7,15 @@
 
 namespace App\Form;
 
-use App\Entity\Picture;
 use App\Entity\Tag;
+use App\Entity\Picture;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 
 class PictureType extends AbstractType
@@ -49,6 +50,9 @@ class PictureType extends AbstractType
             ->add('tag', EntityType::class, [
                 'class' => Tag::class
                 , 'choice_label' => 'name',
+            ])
+            ->add('description', TextareaType::class, [
+                'required' => false
             ])
         ;
     }

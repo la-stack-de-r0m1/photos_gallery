@@ -19,11 +19,13 @@
                 Delete</a></p>
             {% endif %}
         </div>
+        <div class="content">
+            <img src="{{ '/uploads/pictures/' ~ picture.pictureFilename }}" alt="{{ picture.name }}">
+        </div>
+        <div class="description">
+            {{ picture.description }}
+        </div>
 
-            <div class="content">
-                <img src="{{ '/uploads/pictures/' ~ picture.pictureFilename }}" alt="{{ picture.name }}"
-                    width="1000">
-            </div>
     </div>
     <hr>
     <section id="comments">

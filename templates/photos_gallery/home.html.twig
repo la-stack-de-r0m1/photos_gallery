@@ -7,7 +7,7 @@
     <p align="center">Please, create an <a href="{{ path('admin_register') }}">admin user</a></p>
   {% else %}
     <div align="center">
-      <img src="/uploads/pictures/sky.jpg" alt="Sky" width="600" height="480">  
+      <img src="/static/sky.jpg" alt="Sky" width="600" height="480">  
 
       {% if not app.user %}  
         <p>First visit? You can <a href="{{ path('security_registration') }}">create an account.</a></p>
