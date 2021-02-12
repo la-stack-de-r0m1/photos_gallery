@@ -9,12 +9,30 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    {% if newTag is defined %}
+        <div class="alert alert-success">
+            Tag <strong>{{ newTag.name }}</strong> successfully created!
+        </div>
+    {% endif %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/r0m1/www/symphony/PhotosGallery/src/Controller/AdminController.php'|file_link(0) }}">src/Controller/AdminController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/r0m1/www/symphony/PhotosGallery/templates/admin/index.html.twig'|file_link(0) }}">templates/admin/index.html.twig</a></code></li>
-    </ul>
+    <h1>Hello, {{ app.user.username }} ! ✅</h1>
+    <p>You're the boss in this place.</p>
+    <hr>
+    <h4>Existing tags</h4>
+    <p>
+        {% for tag in tags %}
+            #{{ tag.name }}&nbsp;
+        {% endfor %}
+    </p>
+
+    <hr>
+    <h4>Creating a new tag</h4>
+    {{ form_start(formTag) }}        
+        {{ form_row(formTag.name,
+            {'attr': {'placeholder': 'New tag name'}}
+        )}}
+        <button type="submit" class="btn btn-success">Create tag</button>
+        {{ form_row(formTag._token) }}
+    {{ form_end(formTag) }}
 </div>
 {% endblock %}

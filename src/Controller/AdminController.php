@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Tag;
 use App\Entity\User;
+use App\Form\TagType;
 use App\Form\RegistrationType;
+use App\Repository\TagRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,10 +54,26 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin", name="admin_home")
      */
-    public function index() : Response {
+    public function index(Request $request, EntityManagerInterface $manager, TagRepository $tagRepo) : Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $tags = $tagRepo->findAll();
+        $tag = new Tag();
+        $form = $this->createForm(TagType::class, $tag);
+        $form->handleRequest($request);   
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($tag);
+            $manager->flush();
+            $tags[] = $tag;
+            return $this->render('admin/index.html.twig', [
+                'tags' => $tags,
+                'newTag' => $tag,
+                'formTag' => $form->createView()
+            ]);
+        }
+
         return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
+            'tags' => $tags,
+            'formTag' => $form->createView()
         ]);
     }
 }

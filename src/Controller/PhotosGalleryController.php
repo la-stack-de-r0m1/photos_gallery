@@ -141,7 +141,6 @@ class PhotosGalleryController extends AbstractController
           'slugName' => $picture->getSlugName()
         ]);
       }
-
       return $this->render('photos_gallery/show.html.twig', [
           'picture' => $picture,
           'formComment' => $form->createView()

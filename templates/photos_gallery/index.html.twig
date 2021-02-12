@@ -3,6 +3,9 @@
 {% block title %}Welcome to my photos gallery!{% endblock %}
 
 {% block body %}
+<div>
+    Got to page : {{ knp_pagination_render(pictures) }} 
+</div>
 
 <section class="pictures">
 <div class="row">
@@ -21,6 +24,8 @@
     {% endfor %}
 </div>
 </section>
-Got to page : {{ knp_pagination_render(pictures) }}
+<div>
+    Got to page : {{ knp_pagination_render(pictures) }}
+</div>
 
 {% endblock %}
