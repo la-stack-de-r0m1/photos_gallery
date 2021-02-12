@@ -38,7 +38,9 @@ class AdminController extends AbstractController
             $manager->persist($user);
             $manager->flush(); 
 
-            return $this->redirectToRoute('security_login');
+            return $this->redirectToRoute('security_login', [
+                'success' => "Admin user successfully created!"
+            ]);
         }
 
         return $this->render('admin/registration.html.twig', [

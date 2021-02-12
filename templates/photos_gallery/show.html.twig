@@ -12,15 +12,18 @@
         <h2>{{ picture.name }}</h2>
         <div class="metadata">
             <p>Added {{ picture.addedAt | date('y/m/d at H:i') }}</p>
-            <p>Tags: #{{ picture.tag.name }}</p>
-        </div>
-        <div class="content">
-            <img src="{{ '/uploads/pictures/' ~ picture.pictureFilename }}" alt="{{ picture.name }}">
+            <p>Tag: #{{ picture.tag.name }}
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('photos_del', {'slugName' : picture.slugName}) }}" class="btn btn-danger"
+                    onclick="return confirm('Are you sure you want to delete this item?')">
+                Delete</a></p>
+            {% endif %}
         </div>
 
-        <a href="{{ path('photos_del', {'slugName' : picture.slugName}) }}" class="btn btn-danger"
-            onclick="return confirm('Are you sure you want to delete this item?')">
-        Delete</a>
+            <div class="content">
+                <img src="{{ '/uploads/pictures/' ~ picture.pictureFilename }}" alt="{{ picture.name }}"
+                    width="1000">
+            </div>
     </div>
     <hr>
     <section id="comments">

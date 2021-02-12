@@ -5,6 +5,10 @@
         <div class="alert alert-danger">
             {{ app.request.get('error') }}
         </div>
+    {% elseif app.request.get('success') %}
+        <div class="alert alert-success">
+            {{ app.request.get('success') }}
+        </div>
     {% endif %}
 
     {% if not app.user %}

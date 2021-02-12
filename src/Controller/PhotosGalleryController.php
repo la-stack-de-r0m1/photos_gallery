@@ -89,6 +89,8 @@ class PhotosGalleryController extends AbstractController
      */
     public function add(Request $request, EntityManagerInterface $manager, PictureUploader $uploader) : Response
     {
+      $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
       $picture = new Picture();
       $form = $this->createForm(PictureType::class, $picture);
       $form->handleRequest($request);
@@ -161,6 +163,8 @@ class PhotosGalleryController extends AbstractController
      */
     public function del(Picture $picture, EntityManagerInterface $manager) : Response
     {
+      $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
       $filesystem = new Filesystem();
       $filename = $picture->getPictureFilename();
       try {
