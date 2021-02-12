@@ -111,6 +111,13 @@ class User implements UserInterface
         return null;
     }
 
+    public function addAdminRole() : self
+    {
+        $this->roles[] = 'ROLE_ADMIN';
+
+        return $this;
+    }
+
     public function getRoles()
     {
         return $this->roles;

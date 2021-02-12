@@ -14,8 +14,9 @@ use App\Form\CommentType;
 use App\Form\PictureType;
 use App\Service\PictureUploader;
 
-use App\Repository\PictureRepository;
+use App\Repository\UserRepository;
 
+use App\Repository\PictureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -34,9 +35,19 @@ class PhotosGalleryController extends AbstractController
      * 
      * @Route("/", name="photos_home")
      */
-    public function home(): Response
+    public function home(UserRepository $userRepo): Response
     {
-        return $this->render('photos_gallery/home.html.twig');
+      $users = $userRepo->findAll();
+      $need_admin = true;
+      foreach ($users as $user) {
+          if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            $need_admin = false;
+            break ;
+          }
+      }
+      return $this->render('photos_gallery/home.html.twig', [
+        'require_admin_registration' => $need_admin
+      ]);
     }
     /**
      * Display the index, where all the pictuires thumb are displayed, allowing
