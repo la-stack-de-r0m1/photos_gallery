@@ -3,10 +3,12 @@
 {% form_theme formComment 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
-
+<div class="simple-wrapper">
     <div>
         {% if error is defined %}
             <div class="alert alert-danger">{{ error }}</div>
+        {% elseif adding %}
+            <div class="alert alert-success">✅ Comment successfully added!</div>
         {% endif %}
 
         <h2>{{ picture.name }}</h2>
@@ -24,6 +26,22 @@
         </div>
         <div class="description">
             {{ picture.description }}
+        </div>
+        
+        <div align="center">
+            {% if previousPicture %}
+                <a href="{{ path('photos_show', {'slugName' : previousPicture.slugName}) }}"
+                    class="btn btn-secondary">< Previous</a>
+            {% else %}
+                <a href="#" class="btn btn-secondary disabled ">Next ></a>
+            {% endif %}
+
+            {% if nextPicture %}
+                <a href="{{ path('photos_show', {'slugName' : nextPicture.slugName}) }}"
+                    class="btn btn-secondary">Next ></a>
+            {% else %}
+                <a href="#" class="btn btn-secondary disabled ">Next ></a>
+            {% endif %}
         </div>
 
     </div>
@@ -81,5 +99,5 @@
         
         {{ form_end(formComment) }}
     </section>
-
+</div>
 {% endblock %}

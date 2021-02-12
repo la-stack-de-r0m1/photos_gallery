@@ -127,24 +127,30 @@ class PhotosGalleryController extends AbstractController
      * 
      * @Route("/photos/{slugName}", name="photos_show")
      */
-    public function show(Picture $picture, Request $request, EntityManagerInterface $manager) : Response
+    public function show(Picture $picture, Request $request,
+      EntityManagerInterface $manager, PictureRepository $pictureRepo) : Response
     {
       $comment = new Comment();
       $form = $this->createForm(CommentType::class, $comment);
       $form->handleRequest($request);
       
+      $nextPicture = $pictureRepo->getNextPicture($picture->getId());
+      $previousPicture = $pictureRepo->getPreviousPicture($picture->getId());
+
+      $adding = false;
       if ($form->isSubmitted() && $form->isValid()) {
         $comment->setCreatedAt(new \DateTime())
                 ->setPicture($picture);
         $manager->persist($comment);
         $manager->flush();
-        return $this->redirectToRoute('photos_show', [
-          'slugName' => $picture->getSlugName()
-        ]);
+        $adding = true;
       }
       return $this->render('photos_gallery/show.html.twig', [
-          'picture' => $picture,
-          'formComment' => $form->createView()
+            'picture'         => $picture
+          , 'formComment'     => $form->createView()
+          , 'nextPicture'     => $nextPicture
+          , 'previousPicture' => $previousPicture
+          , 'adding'          => $adding
       ]);
     }
 

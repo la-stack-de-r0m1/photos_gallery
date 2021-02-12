@@ -47,4 +47,32 @@ class PictureRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getPreviousPicture($pictureId)
+    {
+        return $this->createQueryBuilder('u')
+                ->select('u')
+                ->where('u.id < :pictureId')
+                ->setParameter(':pictureId', $pictureId)
+                ->orderBy('u.id', 'DESC')
+                ->setFirstResult(0)
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getOneOrNullResult()
+        ;
+    }
+
+    public function getNextPicture($pictureId)
+    {
+        return $this->createQueryBuilder('u')
+                ->select('u')
+                ->where('u.id > :pictureId')
+                ->setParameter(':pictureId', $pictureId)
+                ->orderBy('u.id', 'ASC')
+                ->setFirstResult(0)
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getOneOrNullResult()
+        ;
+    }
 }
