@@ -1,9 +1,13 @@
-1. Open the .env.sample and, in the line DATABASE_URL (mysql), replace the
+1. Rename the file .env.sample into .env:
+   $ cp .env.sample .env
+
+2. Open the .env.sample and, in the line DATABASE_URL (mysql), replace the
 database credentials <login> and <password> by the actual login and password
 (without the ('<' and '>' signs).
 
-2. Rename the file .env.sample into .env:
-   $ cp .env.sample .env
+3. $ git clone https://github.com/romainbe/photos_gallery.git
 
-   composer require knplabs/knp-paginator-bundle
-   composer req "imagine/imagine:^1.2"
+3.
+	composer require knplabs/knp-paginator-bundle
+	composer req "imagine/imagine:^1.2"
+

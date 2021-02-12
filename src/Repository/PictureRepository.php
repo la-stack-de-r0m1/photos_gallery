@@ -32,7 +32,7 @@ class PictureRepository extends ServiceEntityRepository
      * 
      * @return Picture the picture preceeding the picture with pictureId, or null.
      */
-    public function getPreviousPicture($pictureId) : Picture
+    public function getPreviousPicture($pictureId) : ?Picture
     {
         return $this->createQueryBuilder('u')
                 ->select('u')
@@ -53,7 +53,7 @@ class PictureRepository extends ServiceEntityRepository
      * 
      * @return Picture the picture following the picture with pictureId, or null.
      */
-    public function getNextPicture($pictureId) : Picture
+    public function getNextPicture($pictureId) : ?Picture
     {
         return $this->createQueryBuilder('u')
                 ->select('u')
