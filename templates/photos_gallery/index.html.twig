@@ -3,12 +3,13 @@
 {% block title %}Welcome to my photos gallery!{% endblock %}
 
 {% block body %}
+
 <div>
     {{ knp_pagination_render(pictures) }} 
 </div>
-
+<br>
 <section class="pictures">
-<div class="row">
+    <div class="row">
     {% for picture in pictures %}
         <div class="col-md-3">
             <div class="content">
