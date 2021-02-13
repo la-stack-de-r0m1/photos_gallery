@@ -56,7 +56,7 @@ class PictureResizer
      * @param int $height the height of the resized picture
      */
     public function resize(int $width, int $height) : self {
-        list($width, $height) = $this->computeSize(1000, 800);
+        list($width, $height) = $this->computeSize($width, $height);
         $this->resizedPicture->resize(new Box($width, $height));
 
         return $this;
@@ -69,7 +69,7 @@ class PictureResizer
      * @param int $height the height of the thumbnail
      */
     public function thumbnail(int $width, int $height) : self {
-        list($width, $height) = $this->computeSize(300, 150);
+        list($width, $height) = $this->computeSize($width, $height);
         $this->thumbnail = $this->resizedPicture->thumbnail(new Box($width, $height));
         return $this;
     }
