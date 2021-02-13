@@ -1,25 +1,25 @@
-1. Rename the file .env.sample into .env:
-   $ cp .env.sample .env
-
-2. Open the .env.sample and, in the line DATABASE_URL (mysql), replace the
-database credentials <login> and <password> by the actual login and password
-(without the ('<' and '>' signs).
-
-3. Clone repository
+1. Clone repository
    $ git clone https://github.com/romainbe/photos_gallery.git
 
-3. Enter the photos_gallery and install symfony
+2. Enter the photos_gallery and install symfony
    $ cd photos_gallery
+
+3. Rename the file .env.sample into .env:
+   $ cp .env.sample .env
+
+4. Open the .env file and, in the line DATABASE_URL (mysql), replace
+database credentials <login> and <password> by the actual login and password
+(without the ('<' and '>' signs). Eventually, chose an alternate name for
+the DB.
+
+5. Run composer
    $ composer install
 
-# composer require knplabs/knp-paginator-bundle
-# composer req "imagine/imagine:^1.2"
-
-4. Create the DB and apply migrations
+6. Create the DB and apply migrations
    $ php bin/console doctrine:database:create
    $ php bin/console doctrine:migrations:migrate
 
-5. Run the server
+7. Run the server
    $ php bin/console server:start
 
 KNOWN BUG :
