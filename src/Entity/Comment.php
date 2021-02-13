@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * This file is part of the photos_gallery project
+ * 
+ * Author: Romain Bertholon <romain.bertholon@gmail.com>
+ */
+
 namespace App\Entity;
 
 use App\Repository\CommentRepository;

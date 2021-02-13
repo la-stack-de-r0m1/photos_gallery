@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * This file is part of the photos_gallery project
+ * 
+ * Author: Romain Bertholon <romain.bertholon@gmail.com>
+ */
+
+
 namespace App\Form;
 
 use App\Entity\User;
