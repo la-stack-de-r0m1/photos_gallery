@@ -58,7 +58,7 @@ class AdminController extends AbstractController
             $manager->persist($user);
             $manager->flush();
 
-            $this->addFlash('success', '✅ Admin user successfully created!');
+            $this->addFlash('success', 'Admin');
     
             return $this->redirectToRoute('security_login');
         }
