@@ -21,3 +21,6 @@ database credentials <login> and <password> by the actual login and password
 
 5. Run the server
    $ php bin/console server:start
+
+KNOWN BUG :
+   the file name does not appear in the upload field on the /add page.
