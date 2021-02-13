@@ -36,3 +36,8 @@ services:
     App\Service\PictureUploader:
         arguments:
             $targetDirectory: '%pictures_directory%'
+
+    # service to resize a picture
+    App\Service\PictureResizer:
+        arguments:
+            

@@ -106,24 +106,45 @@ class PhotosGalleryController extends AbstractController
      
       if ($form->isSubmitted() && $form->isValid()) {
         $pictureFile = $form->get('pictureFilename')->getData();
-        if ($pictureFile) {
-          $pictureNames = $uploader->upload($pictureFile, $picture->getName());
-          $picture->setPictureFilename($pictureNames['newPictureName'])
-                  ->setThumbFilename($pictureNames['thumbFilename'])
-                  ->setSlugName($pictureNames['safePictureName'])
-                  ->setAddedAt(new \DateTime());;
+        
+        if ($this->uploadAndRename($picture, $uploader, $pictureFile)) {
+          $manager->persist($picture);
+          $manager->flush();
+          return $this->redirectToRoute('photos_show', [
+            'slugName' => $picture->getSlugName()
+          ]);
+        } else {
+          return $this->render('photos_gallery/add.html.twig', [
+            'formPicture' => $form->createView(),
+            'error'       => 'Could not upload the picture.'
+          ]);
         }
-        $manager->persist($picture);
-        $manager->flush();
-
-        return $this->redirectToRoute('photos_show', [
-          'slugName' => $picture->getSlugName()
-        ]);
       }
-
       return $this->render('photos_gallery/add.html.twig', [
         'formPicture' => $form->createView()
       ]);
+    }
+
+    /**
+     * Helper to upload and rename the picture.
+     * 
+     * @param Picture $picture the picture entity
+     * @param PictureUploader $uploader the uploader service
+     * @param $pictureFile the uploaded file data
+     * 
+     * @return true if everything went fine, false otherwise
+     */
+    private function uploadAndRename(Picture $picture, PictureUploader $uploader, $pictureFile) : bool {
+      $success = false;
+      if ($pictureFile) {
+        $pictureInfo = $uploader->upload($pictureFile, $picture->getName());
+        $picture->setPictureFilename($pictureInfo['newPictureName'])
+                ->setThumbFilename($pictureInfo['thumbFilename'])
+                ->setSlugName($pictureInfo['safePictureName'])
+                ->setAddedAt(new \DateTime());
+        $success = !$pictureInfo['error'];
+      }
+      return $success;
     }
 
     /**

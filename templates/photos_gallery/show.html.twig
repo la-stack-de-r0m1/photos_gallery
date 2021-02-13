@@ -54,7 +54,7 @@
                 <div class="row">
                     <div class="col-3">
                         {{ comment.author }}
-                        <small>(Created the {{ comment.createdAt | date('y/m/d at H:i') }})
+                        <small>(Written the {{ comment.createdAt | date('y/m/d at H:i') }})
                         </small>      
                     </div>
                     <div class="col-9">
@@ -66,8 +66,8 @@
 
         {% endfor %}
     </section>
-    <section id="add_comment">
 
+    <section id="add_comment">
         {% if not app.user %}
             <h4>Adding a comment:</h4>
         {% else %}
