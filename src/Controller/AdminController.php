@@ -42,10 +42,10 @@ class AdminController extends AbstractController
     {
         $users = $userRepo->findAll();
         foreach ($users as $user) {
-            if (in_array('ROLE_ADMIN', $user->getRoles()))
-                return $this->redirectToRoute('security_login', [
-                    'error' => 'Admin user already exists.'
-                ]);
+            if (in_array('ROLE_ADMIN', $user->getRoles())) {
+                $this->addFlash('error', 'Admin user already exists.');
+                return $this->redirectToRoute('security_login');
+            }
         }
 
         $user = new User();
@@ -56,11 +56,11 @@ class AdminController extends AbstractController
             $user->setPassword($hash)
                  ->addAdminRole();
             $manager->persist($user);
-            $manager->flush(); 
+            $manager->flush();
 
-            return $this->redirectToRoute('security_login', [
-                'success' => "Admin user successfully created!"
-            ]);
+            $this->addFlash('success', '✅ Admin user successfully created!');
+    
+            return $this->redirectToRoute('security_login');
         }
 
         return $this->render('admin/registration.html.twig', [
@@ -89,11 +89,13 @@ class AdminController extends AbstractController
             $manager->persist($tag);
             $manager->flush();
             $tags[] = $tag;
-            return $this->render('admin/index.html.twig', [
-                'tags' => $tags,
-                'newTag' => $tag,
-                'formTag' => $form->createView()
-            ]);
+            
+            $this->addFlash('success', $tag->getName());
+
+            unset($tag);
+            unset($form);
+            $tag = new Tag();
+            $form = $this->createForm(TagType::class, $tag);
         }
 
         return $this->render('admin/index.html.twig', [

@@ -6,16 +6,24 @@
         .simple-wrapper code { background: #F5F5F5; padding: 2px 6px; }
     </style>
 
+<script>
+    setTimeout(function(){
+        $("#tmp-msg").slideUp();
+    }, 3000);
+</script>
+
 <div class="simple-wrapper">
-    {% if app.request.get('error') %}
-        <div class="alert alert-danger">
-            {{ app.request.get('error') }}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger"> 
+            {{ message }}
         </div>
-    {% elseif app.request.get('success') %}
-        <div class="alert alert-success">
-            ✅ {{ app.request.get('success') }}
+    {% endfor %}
+    
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" id="tmp-msg"> 
+            ✅ User <strong>{{ message }}</strong> successfully created!
         </div>
-    {% endif %}
+    {% endfor %}
 
     {% if error %}
         <div class="alert alert-danger">

@@ -3,12 +3,22 @@
 {% form_theme formComment 'bootstrap_4_layout.html.twig' %}
 
 {% block body %}
+
+<script>
+    setTimeout(function(){
+        $("#tmp-msg").slideUp();
+    }, 3000);
+</script>
+
 <div class="simple-wrapper">
+
     <div>
+        {% for message in app.flashes('success') %}
+            <div id="tmp-msg" class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+
         {% if error is defined %}
             <div class="alert alert-danger">{{ error }}</div>
-        {% elseif adding %}
-            <div class="alert alert-success">✅ Comment successfully added!</div>
         {% endif %}
 
         <h2>{{ picture.name }}</h2>
@@ -24,9 +34,11 @@
         <div class="content">
             <img src="{{ '/uploads/pictures/' ~ picture.pictureFilename }}" alt="{{ picture.name }}">
         </div>
+        <br>
         <div class="description">
             {{ picture.description }}
         </div>
+        <br>
         
         <div align="center">
             {% if previousPicture %}
@@ -47,14 +59,14 @@
     </div>
     <hr>
     <section id="comments">
-        <h2>{{ picture.comments | length }} comment(s):</h2>
+        <h3>{{ picture.comments | length }} comment(s):</h3>
         {% for comment in picture.comments %}
 
             <div class="comment">
                 <div class="row">
                     <div class="col-3">
-                        {{ comment.author }}
-                        <small>(Written the {{ comment.createdAt | date('y/m/d at H:i') }})
+                        <strong>{{ comment.author }}</strong>
+                        <small><i>(Written the {{ comment.createdAt | date('y/m/d at H:i') }})</i>
                         </small>      
                     </div>
                     <div class="col-9">
@@ -69,28 +81,24 @@
 
     <section id="add_comment">
         {% if not app.user %}
-            <h4>Adding a comment:</h4>
+            <h4>Comment:</h4>
         {% else %}
             <h4>Comment as <strong>{{ app.user.username }}</strong>: </h4>
         {% endif %}
         
         {{ form_start(formComment) }}
             {% if not app.user %}
-                {{ form_row(
+                {{ form_widget(
                     formComment.author,
                     {'attr': {'placeholder': 'Enter your name'}}
                 )}}
             {% else %}
-                {{ form_row(
-                    formComment.author,
-                    {
-                        'attr': {'value': app.user.username },
-                    }
-                )}}
+                {% do formComment.author.setRendered() %}
             {% endif %}
-        
-            {{ form_row(
-                formComment.content
+            <br>
+            {{ form_widget(
+                formComment.content,
+                {'attr': {'placeholder': 'Write your comment...'}}
             )}}
             
             <hr>

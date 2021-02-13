@@ -3,17 +3,18 @@
 {% block title %}Photo Gallery admin{% endblock %}
 
 {% block body %}
-<style>
-    .simple-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .simple-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<script>
+    setTimeout(function(){
+        $("#tmp-msg").slideUp();
+    }, 3000); 
+</script>
 
 <div class="simple-wrapper">
-    {% if newTag is defined %}
-        <div class="alert alert-success">
-           ✅ Tag <strong>{{ newTag.name }}</strong> successfully created!
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success" id="tmp-msg"> 
+            ✅ Tag <strong>{{ message }}</strong> successfully created!
         </div>
-    {% endif %}
+    {% endfor %}
 
     <h1>Hello, {{ app.user.username }} ! </h1>
     <p>You're the boss in this place.</p>

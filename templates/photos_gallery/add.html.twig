@@ -5,9 +5,9 @@
 {% block title %}Add a picture{% endblock %}
 
 {% block body %}
-    {% if error is defined %}
-        <div class="alert alert-danger">{{ error }}</div>
-    {% endif %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
 
     <h1>Adding a picture</h1>
 

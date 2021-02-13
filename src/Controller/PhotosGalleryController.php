@@ -114,9 +114,13 @@ class PhotosGalleryController extends AbstractController
             'slugName' => $picture->getSlugName()
           ]);
         } else {
+          $this->addFlash(
+            'error',
+            'Could not upload the picture!'
+          );
+
           return $this->render('photos_gallery/add.html.twig', [
-            'formPicture' => $form->createView(),
-            'error'       => 'Could not upload the picture.'
+            'formPicture' => $form->createView()
           ]);
         }
       }
@@ -170,18 +174,28 @@ class PhotosGalleryController extends AbstractController
 
       $adding = false;
       if ($form->isSubmitted() && $form->isValid()) {
+        if ($this->getUser())
+          $comment->setAuthor($this->getUser()->getUsername());
         $comment->setCreatedAt(new \DateTime())
                 ->setPicture($picture);
         $manager->persist($comment);
         $manager->flush();
-        $adding = true;
+
+        unset($comment);
+        unset($form);
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+
+        $this->addFlash(
+          'success',
+          '✅ Comment successfully added!'
+        );
       }
       return $this->render('photos_gallery/show.html.twig', [
             'picture'         => $picture
           , 'formComment'     => $form->createView()
           , 'nextPicture'     => $nextPicture
           , 'previousPicture' => $previousPicture
-          , 'adding'          => $adding
       ]);
     }
 
