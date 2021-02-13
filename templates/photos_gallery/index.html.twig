@@ -11,18 +11,17 @@
 <div class="row">
     {% for picture in pictures %}
         <div class="col-md-3">
-            <h3>{{ picture.name }}</h3>
-            <div class="metadata">Added {{ picture.addedAt | date('y/m/d') }} 
-                at {{ picture.addedAt | date('H:i') }}
-            </div>
             <div class="content">
                 <a href="{{ path('photos_show', {'slugName' : picture.slugName}) }}">
-                    <img src="{{ 'uploads/pictures/' ~ picture.thumbFilename }}" alt="{{ picture.name }}">
+                    <img src="{{ 'uploads/pictures/' ~ picture.thumbFilename }}"
+                        alt="{{ picture.name }}" title="{{ picture.name }}">
                 </a>
-                <hr>
-                <a href="{{ path('photos_show', {'slugName' : picture.slugName}) }}"
-                    class="btn btn-primary">View</a>
+                <div class="metadata">Added the {{ picture.addedAt | date('y/m/d') }} 
+                    at {{ picture.addedAt | date('H:i') }}
+                </div>
             </div>
+            <hr>
+
         </div>
     {% endfor %}
 </div>
