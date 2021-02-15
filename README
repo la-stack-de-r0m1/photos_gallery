@@ -1,21 +1,20 @@
-1. Clone repository
+1. Clone repository and enter de directory
    $ git clone https://github.com/romainbe/photos_gallery.git
-
-2. Enter the photos_gallery and install symfony
    $ cd photos_gallery
 
-3. Rename the file .env.sample into .env:
+2. Setup the database
+   - Rename the file .env.sample into .env:
    $ cp .env.sample .env
 
-4. Open the .env file and, in the line DATABASE_URL (mysql), replace
-database credentials <login> and <password> by the actual login and password
-(without the ('<' and '>' signs). Eventually, chose an alternate name for
-the DB.
+   - Open the .env file and, in the line DATABASE_URL (mysql in the exemple),
+   replace database credentials <login> and <password> by the actual login and
+   password (without the ('<' and '>' signs). Eventually, chose an alternate
+   name for the DB.
 
-5. Run composer
+3. Install the photos_gallery
    $ composer install
 
-6. Create the DB and apply migrations
+4. Create the DB and apply the migrations:
    $ php bin/console doctrine:database:create
    $ php bin/console doctrine:migrations:migrate
 
