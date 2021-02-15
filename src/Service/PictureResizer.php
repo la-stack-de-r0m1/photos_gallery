@@ -13,7 +13,7 @@ use Imagine\Gd\Imagine;
 use Imagine\Exception\Exception;
 
 /**
- * Used to resize a picture, so it fits the server requirements.
+ * Resize a picture, so it fits the server requirements.
  */
 class PictureResizer
 {
@@ -77,8 +77,8 @@ class PictureResizer
     /**
      * Save the resized picture and the thumbnail.
      * 
-     * @param string $filename the picture name
-     * @param string $thumbName the thumb file name
+     * @param string $filename the destination picture name
+     * @param string $thumbName the thumb destination file name
      */
     public function save(string $filename, string $thumbName) {
         if ($this->resizedPicture)

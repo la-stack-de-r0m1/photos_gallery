@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class SecurityController extends AbstractController
 {
     /**
-     * Register a new user with the ROLE_USER.
+     * Register a new user with the role ROLE_USER.
      * 
      * @param Request $request
      * @param EntityManagerInterface $manager

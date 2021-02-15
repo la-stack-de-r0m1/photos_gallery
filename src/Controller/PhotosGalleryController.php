@@ -31,7 +31,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PhotosGalleryController extends AbstractController
 {
     /**
-     * Route to the web site home page. Displays a link to create a user admin
+     * Route to the home page. Displays a link to create a user admin
      * when it does not exist.
      * 
      * @param UserRepository $userRepo used to get the admin user.
@@ -53,11 +53,11 @@ class PhotosGalleryController extends AbstractController
       ]);
     }
     /**
-     * Display the index, where all the pictuires thumb are displayed, allowing
+     * Route to the index, where all the pictuires thumbs are displayed, allowing
      * the user to open them by clicking on them.
      * 
      * @param PictureRepository $repo the picture repository used to get
-     * pictures data to display them.
+     * the pictures to display .
      * @param Request $request
      * @param PaginatorInterface $paginator used to paginate if there are more
      * than 12 pictures on the page.
@@ -82,12 +82,12 @@ class PhotosGalleryController extends AbstractController
 
     /**
      * Route to the add picture page, that displays a form to select a picture
-     * and upload it upon validation. Check the data are valid, and save them
+     * and upload it upon validation. Check if the data are valid, and save them
      * if they are. Resize the picture and create the thumbnail.
      * 
      * The admin alone can access this page.
      * 
-     * @param Request $request the request containing the picture that need to
+     * @param Request $request the request containing the picture that needs to
      * be saved.
      * @param EntityManagerInterface $manager the doctrine entity manager
      * @param PictureUploader $uploader the uploader service
@@ -152,7 +152,7 @@ class PhotosGalleryController extends AbstractController
     }
 
     /**
-     * The root to display a pictures with its comments if any. Also displays
+     * The route to display a pictures and its comments. Also displays
      * a form to add a comment, and handle the comment form when it's submitted.
      * 
      * @param Picture $picture the picture to display.

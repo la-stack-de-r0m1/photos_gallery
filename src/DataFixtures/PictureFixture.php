@@ -20,7 +20,7 @@ use App\Entity\Comment;
  * - Comments
  * - Tags
  * 
- * Each picture is linked to one tag, and eahc comment to one picture.
+ * Each picture is linked to one tag, and each comment to one picture.
  */
 class PictureFixture extends Fixture
 {
@@ -35,7 +35,7 @@ class PictureFixture extends Fixture
     private $manager;
 
     /**
-     * Load the fake data set in the database. It uses Faker:
+     * Load the fake dataset in the database. It uses Faker:
      * https://fakerphp.github.io/
      * 
      * @param ObjectManager $manager the doctrine ORM manager used to persist
