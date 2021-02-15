@@ -23,12 +23,12 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * This class is used to create the admin user, and to access the admin page where the admin can
- * add tags for the pictures.
+ * create tags for the pictures.
  */
 class AdminController extends AbstractController
 {
     /**
-     * Register the admin user, if it does not already exist, when the form is submitted.
+     * Register the admin user, if he does not already exists, when the form is submitted.
      * 
      * @param Request $request
      * @param EntityManagerInterface $manager
@@ -40,6 +40,7 @@ class AdminController extends AbstractController
     public function registration(Request $request, EntityManagerInterface $manager,
         UserPasswordEncoderInterface $encoder, UserRepository $userRepo): Response
     {
+        // search for an admin user ; there's probably a better way to do this.
         $users = $userRepo->findAll();
         foreach ($users as $user) {
             if (in_array('ROLE_ADMIN', $user->getRoles())) {
